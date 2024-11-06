@@ -16,8 +16,7 @@ public class Teacher {
     public Teacher() {
     }
 
-    public Teacher(Long id, String name, String role) {
-        this.id = id;
+    public Teacher(String name, String role) {
         this.name = name;
         this.role = role;
     }
