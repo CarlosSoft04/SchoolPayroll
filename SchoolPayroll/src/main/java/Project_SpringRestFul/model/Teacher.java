@@ -1,4 +1,4 @@
-package model;
+package Project_SpringRestFul.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Entity
 public class Teacher {
+
     private @Id
     @GeneratedValue Long id;
     private String name;
