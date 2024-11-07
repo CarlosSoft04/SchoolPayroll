@@ -1,28 +1,40 @@
 package Project_SpringRestFul.controller;
 
+import Project_SpringRestFul.assembler.TeacherModelAssembler;
 import Project_SpringRestFul.error.TeacherNotFoundException;
 import Project_SpringRestFul.model.Teacher;
 import Project_SpringRestFul.repository.TeacherRepository;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class TeacherController {
     private final TeacherRepository repository;
+    private final TeacherModelAssembler assembler;
 
-    public TeacherController(TeacherRepository repository) {
+
+    public TeacherController(TeacherRepository repository, TeacherModelAssembler assembler) {
         this.repository = repository;
+        this.assembler = assembler;
     }
 
     @GetMapping("/teachers")
-    List<Teacher> all(){
-        return repository.findAll();
+    public CollectionModel<EntityModel<Teacher>> all() {
+        List<EntityModel<Teacher>> teachers = repository.findAll().stream().map(assembler::toModel).collect(Collectors.toList());
+
+        return CollectionModel.of(teachers, linkTo(methodOn(TeacherController.class).all()).withSelfRel());
     }
 
     @GetMapping("/teachers/{id}")
-    Teacher one(@PathVariable Long id){
-        return repository.findById(id).orElseThrow(() -> new TeacherNotFoundException(id));
+    public EntityModel<Teacher> one(@PathVariable Long id){
+        Teacher teacher = repository.findById(id).orElseThrow(() -> new TeacherNotFoundException(id));
+        return assembler.toModel(teacher);
+
     }
 
     @PostMapping("/teachers")
@@ -36,7 +48,7 @@ public class TeacherController {
                 .map(teacher -> {
 
                     teacher.setName(newTeacher.getName());
-                    teacher.setRole(newTeacher.getRole());
+                    teacher.setDisciplina(newTeacher.getDisciplina());
 
                     return repository.save(teacher);
                 })

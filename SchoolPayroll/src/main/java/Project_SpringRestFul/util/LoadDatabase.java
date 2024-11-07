@@ -17,8 +17,8 @@ public class LoadDatabase {
     CommandLineRunner initDatabase(TeacherRepository repository) {
 
         return args -> {
-            log.info("Pré carregamento: {}", repository.save(new Teacher("Carlos", "Professor")));
-            log.info("Pré carregamento: {}", repository.save(new Teacher("Julia", "Professora")));
+            log.info("Pré carregamento: {}", repository.save(new Teacher("Carlos","Rios","Matematica")));
+            log.info("Pré carregamento: {}", repository.save(new Teacher("Pedro","Silva","Portugues")));
         };
 
     }
