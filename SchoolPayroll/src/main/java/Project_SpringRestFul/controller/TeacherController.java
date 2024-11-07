@@ -6,6 +6,8 @@ import Project_SpringRestFul.model.Teacher;
 import Project_SpringRestFul.repository.TeacherRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -38,32 +40,40 @@ public class TeacherController {
     }
 
     @PostMapping("/teachers")
-    Teacher newTeacher(@RequestBody Teacher newTeacher){
-        return repository.save(newTeacher);
+    ResponseEntity<?> newTeacher(@RequestBody Teacher newTeacher) {
+        EntityModel<Teacher> entityModel = assembler.toModel(repository.save(newTeacher));
+
+        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 
     @PutMapping("/teachers/{id}")
-    Teacher replaceTeacher(@RequestBody Teacher newTeacher, @PathVariable Long id) {
-        return repository.findById(id)
-                .map(teacher -> {
+    ResponseEntity<?> replaceTeacher(@RequestBody Teacher newTeacher, @PathVariable Long id) {
+        Teacher atualizarTeacher = repository.findById(id).map(teacher -> {
+            teacher.setName(newTeacher.getName());
+            teacher.setDisciplina(newTeacher.getDisciplina());
+            return repository.save(teacher);
+        }).orElseGet(() -> {
+            return repository.save(newTeacher);
+        });
 
-                    teacher.setName(newTeacher.getName());
-                    teacher.setDisciplina(newTeacher.getDisciplina());
+        EntityModel<Teacher> entityModel = assembler.toModel(atualizarTeacher);
 
-                    return repository.save(teacher);
-                })
+        return  ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
+                        .toUri()).body(entityModel);
 
-                .orElseGet(() -> {
-                    return repository.save(newTeacher);
-                });
-    }
 
+
+
+        }
     @DeleteMapping("/teachers/{id}")
-    void deleteTeacher(@PathVariable Long id){
+    ResponseEntity<?> deleteTeacher(@PathVariable Long id) {
         repository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
     }
 
-}
+
 
 
 
