@@ -29,6 +29,21 @@ A estrutura do projeto segue uma divisão em camadas:
 - **Error**: Lida com o tratamento e retorno de erros.
 - **Repository**:  Fornece acesso e manipulação de dados no banco.
 
-## ⚙️ Instalação e Execução
+## Instalação e Execução Local:
+1. Clone este repositório para o seu computador:
+    ```bash
+    git clone https://github.com/SEU-USUARIO/schollpayroll.git
+    ```
 
-1. Clone o repositório:
+2. Navegue até o diretório do projeto:
+    ```bash
+    cd schollpayroll
+    ```
+
+3. Abra com o IDE da sua preferencia, instale dependencias necessarias e rode o projeto.
+
+## Deploy:
+Este projeto nao esta hospedado, infelizmente.
+
+## Contribuições:
+Contribuições são bem-vindas! Se você tiver uma ideia para melhorar o sistema ou encontrar algum bug, sinta-se à vontade para abrir um **issue** ou enviar um **pull request**.:
