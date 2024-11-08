@@ -9,8 +9,7 @@ import java.util.Objects;
 @Entity
 public class Teacher {
 
-    private @Id
-    @GeneratedValue Long id;
+    private @Id @GeneratedValue Long id;
     private String nome;
     private String sobrenome;
     private String disciplina;
@@ -18,7 +17,7 @@ public class Teacher {
     public Teacher() {
     }
 
-    public Teacher(String nome,String sobrenome, String disciplina) {
+    public Teacher(String nome, String sobrenome, String disciplina) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.disciplina = disciplina;
@@ -40,15 +39,16 @@ public class Teacher {
         this.id = id;
     }
 
-    public String getName() {
-        return this.nome + " " + this.sobrenome;
+    public String getNome() {
+        return this.nome;  // Retorna o nome sem alterações, como você deseja
     }
 
-    public void setName(String nome) {
-    String[] parts = nome.split(" ");
-    this.nome = parts[0];
-    this.sobrenome = parts[1];
+    public void setNome(String nome) {
+        String[] parts = nome.split(" ", 2);  // Limita a divisão para 2 partes
+        this.nome = parts[0];  // Primeiro nome
+        this.sobrenome = parts.length > 1 ? parts[1] : "";  // Sobrenome, se houver
     }
+
 
     public String getDisciplina() {
         return disciplina;
@@ -62,7 +62,10 @@ public class Teacher {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Teacher teacher)) return false;
-        return Objects.equals(id, teacher.id) && Objects.equals(nome, teacher.nome) && Objects.equals(sobrenome, teacher.sobrenome) && Objects.equals(disciplina, teacher.disciplina);
+        return Objects.equals(id, teacher.id) &&
+                Objects.equals(nome, teacher.nome) &&
+                Objects.equals(sobrenome, teacher.sobrenome) &&
+                Objects.equals(disciplina, teacher.disciplina);
     }
 
     @Override

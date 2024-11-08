@@ -49,8 +49,9 @@ public class TeacherController {
     @PutMapping("/teachers/{id}")
     ResponseEntity<?> replaceTeacher(@RequestBody Teacher newTeacher, @PathVariable Long id) {
         Teacher atualizarTeacher = repository.findById(id).map(teacher -> {
-            teacher.setName(newTeacher.getName());
+            teacher.setNome(newTeacher.getNome());
             teacher.setDisciplina(newTeacher.getDisciplina());
+            teacher.setSobrenome(newTeacher.getSobrenome()); // Verifique se o sobrenome está sendo atualizado
             return repository.save(teacher);
         }).orElseGet(() -> {
             return repository.save(newTeacher);
@@ -58,14 +59,11 @@ public class TeacherController {
 
         EntityModel<Teacher> entityModel = assembler.toModel(atualizarTeacher);
 
-        return  ResponseEntity
+        return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF)
                         .toUri()).body(entityModel);
+    }
 
-
-
-
-        }
     @DeleteMapping("/teachers/{id}")
     ResponseEntity<?> deleteTeacher(@PathVariable Long id) {
         repository.deleteById(id);
