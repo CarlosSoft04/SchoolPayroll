@@ -23,6 +23,22 @@ public class Pedido {
         this.status = status;
     }
 
+    public String getDescicao() {
+        return descicao;
+    }
+
+    public void setDescicao(String descicao) {
+        this.descicao = descicao;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }
